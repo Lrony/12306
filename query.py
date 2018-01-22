@@ -135,6 +135,7 @@ def print_train_info(infos):
 if __name__ == '__main__':
     url = get_train_url()
     info = get_train_info(url)
+    # TODO 有几率查询失败
     while info == None:
         info = get_train_info(url)
     print_train_info(info)
