@@ -11,7 +11,6 @@ from docopt import docopt
 from colorama import init, Fore, Style
 import utils
 import requests
-import re
 
 """
 获取查询URL
