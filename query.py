@@ -12,6 +12,8 @@ from colorama import init, Fore, Style
 import utils
 import requests
 
+query_error_num = 0
+
 """
 获取查询URL
 """
@@ -21,10 +23,10 @@ def get_train_url():
     to_station = stations.get(arguments['<到达站>'])
     date = arguments['<出发时间>']
     if from_station is None:
-        print('未找到出发站，或出发站无列车信息')
+        utils.print_error_info('未找到出发站，或出发站无列车信息')
         exit()
     if to_station is None:
-        print('未找到到达站，或到达站无列车信息')
+        utils.print_error_info('未找到到达站，或到达站无列车信息')
         exit()
     url = 'https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT'.format(
         date, from_station, to_station)
@@ -137,5 +139,11 @@ if __name__ == '__main__':
     # TODO 有几率查询失败
     while info == None:
         info = get_train_info(url)
+        # 最多查询失败循环
+        query_error_num = query_error_num+1
+        if query_error_num>=10:
+            utils.print_error_info("查询失败")
+            exit()
+    query_error_num = 0
     print_train_info(info)
             
